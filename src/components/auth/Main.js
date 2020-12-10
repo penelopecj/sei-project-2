@@ -5,16 +5,22 @@ import { getRecipeInfo } from '../../lib/api'
 // import useForm from '../../util/useForm'
 
 function Main( ) {
-  const [foods, setFoods] = React.useState([
+
+  const foods = [
     'apples',
     'carrots',
     'crab',
     'lobster',
     'milk',
-    'eggs'
-  ])
+    'eggs',
+    'prawns',
+    'cheese',
+    'peanuts',
+    'bread',
+    'pasta'
+  ]
 
-  //create a user state in the main App.js that contains an object with the users data
+  ////create a user state in the main App.js that contains an object with the users data
   const [user, setUser] = React.useState({
     vegetarian: false,
     vegan: false,
@@ -23,15 +29,13 @@ function Main( ) {
     allergies: [],
   }
   )
-  //include glutenfree, dairy free, vegan etc in the users data object
-  // include an empty array in the user data state
-  // pass the user state into THIS component
-  // pass the user state into the recipe checker component
-  // let the user tick a box for the vegan, gluten free, and dairy free categories to set value to true or false
-  // let the user select from the tick boxes other allergies
+  // //include glutenfree, dairy free, vegan etc in the users data object
+  // //include an empty array in the user data state
+
+  // //let the user tick a box for the vegan, gluten free, and dairy free categories to set value to true or false
+  // //let the user select from the tick boxes other allergies
   // in the handle submit function, push, filter, and add the new values
   // set the user state to a NEW object with all of their allergies
-  // navigate to the recipe checker page
   
 
   // ])
@@ -98,23 +102,36 @@ function Main( ) {
         </div>
         <div className="column is-half">
           <h3 className="title is-3">Tell us your allergies...</h3>
-          <form onSubmit={handleSubmit}>
-            <ul className="section">
+          <form>
+            <div className="section">
+              <h4 className="title is-4">I am:</h4>
+              <div className="field">
+                <label>Vegetarian</label>
+                <input type="checkbox" />
+              </div>
+              <div className="field">
+                <label>Vegan</label>
+                <input type="checkbox" />
+              </div>
+              <div className="field">
+                <label>Gluten Free</label>
+                <input type="checkbox" />
+              </div>
+              <div className="field">
+                <label>Dairy Free</label>
+                <input type="checkbox" />
+              </div>
+              <h4 className="title is-4">I am allergic to:</h4>
               <div className="field">
                 {foods.map(food => {
                   return (
                     <div key={food}>
                       <label>{food}</label>
-                      <input type="checkbox" name="username" />
+                      <input type="checkbox" />
                     </div>
                   )
                 })}
-                
               </div>
-            </ul>
-              
-            <div className="buttons">
-              <button className="button is-info">Confirm</button>
             </div>
           </form>
         </div>
