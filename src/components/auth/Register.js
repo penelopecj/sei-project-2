@@ -1,5 +1,5 @@
 import React from 'react'
-import monster from '../../images/cookie-monster.png'
+
 // import useForm from '../../util/useForm'
 // import { useHistory } from 'react-router-dom'
 
