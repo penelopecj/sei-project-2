@@ -1,9 +1,18 @@
 import React from 'react'
 import monster from '../../images/cookie-monster.png'
+// import useForm from '../../util/useForm'
+// import { useHistory } from 'react-router-dom'
+
 
 // This is the home page
 
 function Register() {
+  
+  const handleSubmit = (event) => {
+    event.preventDefault() 
+    console.log('You registered a new account!')
+  }
+  
   return (
     <div className="columns section">
       <div className="column is-half">
@@ -13,7 +22,7 @@ function Register() {
       </div>
       <div className="column is-half">
         <h3 className="title is-3">Register Your Account</h3>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="section">
             <div className="field">
               <label className="label">Username</label>

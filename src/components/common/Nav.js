@@ -7,9 +7,9 @@ function Nav() {
     <nav className="navbar is-danger"> 
       <p className="title is-3">Can I Eat This???</p>
       <div className="navbar-brand">
-        <Link to="/intolerances" className="navbar-item">Intolerances</Link>
+        <Link to="/" className="navbar-item">Home</Link>
         <Link to="/recipes" className="navbar-item">Try Your Recipes</Link>
-        <Link to="/" className="navbar-item">Register</Link>
+        <Link to="/register" className="navbar-item">Register</Link>
         <Link to="/login" className="navbar-item">Login</Link>
       </div>
       
