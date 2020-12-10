@@ -17,7 +17,16 @@ function Main( ) {
     'cheese',
     'peanuts',
     'bread',
-    'pasta'
+    'pasta',
+    'almonds',
+    'brazil nuts',
+    'cashew nuts',
+    'macademia nuts',
+    'pecans',
+    'oysters',
+    'shrips',
+    'salmon'
+
   ]
 
   ////create a user state in the main App.js that contains an object with the users data
@@ -27,8 +36,45 @@ function Main( ) {
     glutenFree: false,
     dairyFree: false,
     allergies: [],
+  })
+
+  const [userInput, setUserInput] = React.useState({})
+  
+
+
+  // const handleInput = (event) => {
+  //   const checkedFoods = foods.filter(food => {
+  //     if (event.target.checked === true){
+  //       return food
+  //     }
+      
+  //   })
+  //   console.log(checkedFoods)
+  // }
+
+  const handleChangeCheckbox = (event) => {
+    // The below line will spread in the user details and set allergies to an array of only the ONE box you selected.
+    setUserInput({ ...user, allergies: [event.target.value] })
   }
-  )
+  console.log(userInput)
+
+  // This function needs to be changed or removed
+  const handleConfirm = (event) => {
+    event.preventDefault()
+    const checkedFoods = foods.filter(food => {
+      // input:checkbox[name=type]:checked
+
+      //handleCheckboxChange = (event)=> this.setState({workDays: event.target.value});
+      
+      return food === event.target.value
+    }
+        
+    
+    )
+    console.log(checkedFoods)
+  }
+
+
   // //include glutenfree, dairy free, vegan etc in the users data object
   // //include an empty array in the user data state
 
@@ -102,35 +148,38 @@ function Main( ) {
         </div>
         <div className="column is-half">
           <h3 className="title is-3">Tell us your allergies...</h3>
-          <form>
+          <form onSubmit={handleConfirm}>
             <div className="section">
               <h4 className="title is-4">I am:</h4>
               <div className="field">
                 <label>Vegetarian</label>
-                <input type="checkbox" />
+                <input type="checkbox" value="vegeterian"/>
               </div>
               <div className="field">
                 <label>Vegan</label>
-                <input type="checkbox" />
+                <input type="checkbox" value="vegan" />
               </div>
               <div className="field">
                 <label>Gluten Free</label>
-                <input type="checkbox" />
+                <input type="checkbox" value="glutenFree"/>
               </div>
               <div className="field">
                 <label>Dairy Free</label>
-                <input type="checkbox" />
+                <input type="checkbox" value="dairyFree" />
               </div>
               <h4 className="title is-4">I am allergic to:</h4>
               <div className="field">
-                {foods.map(food => {
+                {foods.sort().map(food => {
                   return (
                     <div key={food}>
                       <label>{food}</label>
-                      <input type="checkbox" />
+                      <input type="checkbox" value={food} onChange={handleChangeCheckbox}/>
                     </div>
                   )
                 })}
+              </div>
+              <div className="buttons">
+                <button className="button is-info">Confirm</button>
               </div>
             </div>
           </form>
