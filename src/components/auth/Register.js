@@ -11,7 +11,8 @@ function Register() {
           <img src={monster} alt="cookie monster" />
         </figure>
       </div>
-      <div>
+      <div className="column is-half">
+        <h3 className="title is-3">Register Your Account</h3>
         <form>
           <div className="section">
             <div className="field">
@@ -29,6 +30,9 @@ function Register() {
             <div className="field">
               <label className="label">Password Confirmation</label>
               <input className="input" type="password" name="passwordConfirmation" placeholder="Password Confirmation"/>
+            </div>
+            <div className="buttons">
+              <button className="button is-info">Continue</button>
             </div>
 
 
