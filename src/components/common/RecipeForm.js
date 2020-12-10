@@ -5,14 +5,23 @@ import { getRecipeInfo } from '../../lib/api'
 // import { useForm } from '../../util/useForm'
 
 function RecipeForm(){
-  const [url, setUrl] = React.useState()
-  // const { formata, handleChange } = useForm({
-  //   recipe:''
-  // })
-  //'https://www.bbc.co.uk/food/recipes/classic_carrot_cake_08513'
+  const [url, setUrl] = React.useState(null) 
+  const [input, setInput] = React.useState('')
   const [ingredients, setIngredients] = React.useState()
 
+  const handleChange = (event) => {
+    setInput(event.target.value)
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    setUrl(input)
+    console.log('url when hit submit:', url)
+  }
+
+
   React.useEffect(() => {
+    if (!url) return
     const getData = async () => {
       try {
         const { data } = await getRecipeInfo(url)
@@ -22,20 +31,9 @@ function RecipeForm(){
         console.log(error)
       }
     }
+    console.log('url at page load', url)
     getData()
-  }, [])
-  
-  const handleChange = (event) => {
-    setUrl(event.target.value)
-  }
-
-  const handleSubmit = async (event) => {
-    event.preventDefault()
-
-    
-  }
-
-  console.log('url:', url)
+  }, [url])
 
 
   //* .glutenFree .dairyFree extendedIngredients[name]
