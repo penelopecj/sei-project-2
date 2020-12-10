@@ -1,11 +1,10 @@
 import React from 'react'
 
-function Intolerances() {
+function RecipeForm() {
   return (
     <div>
-      
     </div>
   )
 }
 
-export default Intolerances
+export default RecipeForm
