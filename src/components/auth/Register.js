@@ -17,7 +17,6 @@ function Register() {
     <div className="columns section">
       <div className="column is-half">
         <figure className="image is-1by1">
-          <img src={monster} alt="cookie monster" />
         </figure>
       </div>
       <div className="column is-half">
