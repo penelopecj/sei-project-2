@@ -8,7 +8,7 @@ function RecipeForm(){
   const [input, setInput] = React.useState('')
   const [data, setData] = React.useState()
   // const [diets, setDiets] = React.useState()
-  const [ingredients, setIngredients] = React.useState()
+  const [badIngredients, setBadIngredients] = React.useState([])
   
   React.useEffect(() => {
     if (!url) return
@@ -52,6 +52,7 @@ function RecipeForm(){
     }
     
     console.log(ingredients)
+    setBadIngredients(ingredients)
   }
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -72,10 +73,10 @@ function RecipeForm(){
             <div className="buttons">
               <button className="button is-info">Submit</button>
             </div>
-            {/* {ingredients.length > 0 ? 
-              <p>Dont eat this!!!</p>
-              : 
-              <p>You can eat this!</p>} */}
+            <h4 className="title is-4">Contains...</h4>
+            {badIngredients.map(thing => {
+              return <p key={thing}>{thing}</p>
+            })}
           </div>
         </form>
       </div>
