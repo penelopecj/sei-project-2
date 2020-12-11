@@ -3,30 +3,20 @@ import React from 'react'
 
 import { getRecipeInfo } from '../../lib/api'
 // import { useForm } from '../../util/useForm'
-
 function RecipeForm(){
   const [url, setUrl] = React.useState(null) 
   const [input, setInput] = React.useState('')
+  const [data, setData] = React.useState()
+  // const [diets, setDiets] = React.useState()
   const [ingredients, setIngredients] = React.useState()
-
-  const handleChange = (event) => {
-    setInput(event.target.value)
-  }
-
-  const handleSubmit = (event) => {
-    event.preventDefault()
-    setUrl(input)
-    console.log('url when hit submit:', url)
-  }
-
-
+  
   React.useEffect(() => {
     if (!url) return
     const getData = async () => {
       try {
         const { data } = await getRecipeInfo(url)
-        console.log(data)
-        setIngredients(data)
+        checkIngredients(data)
+        setData(data)
       } catch (error) {
         console.log(error)
       }
@@ -34,8 +24,39 @@ function RecipeForm(){
     console.log('url at page load', url)
     getData()
   }, [url])
+  const handleChange = (event) => {
+    setInput(event.target.value)
+  }
+  const checkIngredients = (myRecipe) =>{
+    const localStorageAllergies = window.localStorage.getItem('allergies')
+    const localStorageVegetarian = window.localStorage.getItem('vegetarian')
+    const localStorageVegan = window.localStorage.getItem('vegan')
+    const localStorageGlutenFree = window.localStorage.getItem('glutenFree')
+    const localStorageDairyFree = window.localStorage.getItem('dairyFree')
 
-
+    const  ingredients  = myRecipe.extendedIngredients.map(ingredient =>{
+      return ingredient.name
+    }).filter(element => localStorageAllergies.includes(element))
+    
+    if (localStorageVegetarian === true) {
+      ingredients.push('vegetarian')
+    }
+    if (localStorageVegan === true) {
+      ingredients.push('vegan')
+    }
+    if (localStorageGlutenFree === true) {
+      ingredients.push('gluten free')
+    }
+    if (localStorageDairyFree === true) {
+      ingredients.push('dairy free')
+    }
+    
+    console.log(ingredients)
+  }
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    setUrl(input)
+  }
   //* .glutenFree .dairyFree extendedIngredients[name]
 
   return (
@@ -51,11 +72,19 @@ function RecipeForm(){
             <div className="buttons">
               <button className="button is-info">Submit</button>
             </div>
+            {/* {ingredients.length > 0 ? 
+              <p>Dont eat this!!!</p>
+              : 
+              <p>You can eat this!</p>} */}
           </div>
         </form>
       </div>
     </div>
   )
 }
-
 export default RecipeForm
+
+
+
+
+

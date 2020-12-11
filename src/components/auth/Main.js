@@ -2,6 +2,7 @@
 import React from 'react'
 import monster from '../../images/cookie-monster.png'
 import { getRecipeInfo } from '../../lib/api'
+import { Link } from 'react-router-dom'
 // import useForm from '../../util/useForm'
 
 function Main( ) {
@@ -64,8 +65,10 @@ function Main( ) {
   const [allergies, setAllergies] = React.useState(() => {
     const currentState = window.localStorage.getItem('allergies')
     if (currentState) return JSON.parse(currentState)
-    return false
+    return []
   })
+
+
 
   //what if we create a new state for each question like veg veg to set true false value
   // we also create a new state that can hold the array with each food checked added in 
@@ -84,6 +87,9 @@ function Main( ) {
   //   })
   //   console.log(checkedFoods)
   // }
+  React.useEffect(() => {
+
+  }, [])
 
   React.useEffect(() => {
     window.localStorage.setItem('vegetarian', JSON.stringify(vegetarian))
@@ -112,50 +118,23 @@ function Main( ) {
   const handleDairyFree = (event) => {
     setDairyFree(!dairyFree)
   }
-  console.log(vegetarian, vegan, glutenFree, dairyFree)
+
 
   React.useEffect(() => {
     window.localStorage.setItem('allergies', JSON.stringify(allergies))
   },[allergies])
   const handleChangeCheckbox = (event) => {
-    setAllergies([...allergies, event.target.name])
+    if (allergies.includes(event.target.name)) {
+      // const foodIndex = allergies.indexOf(event.target.name)
+      setAllergies([...allergies])
+      //Need to remove event.target.name
+      //Need to uncheck box in UI too!
+    } else {
+      setAllergies([...allergies, event.target.name])
+    }
   }
-  console.log('allergies are', allergies )
-
-  // This function needs to be changed or removed
-  // const handleConfirm = (event) => {
-  //   event.preventDefault()
-  //   const checkedFoods = foods.filter(food => {
-  //     // input:checkbox[name=type]:checked
-
-  //     //handleCheckboxChange = (event)=> this.setState({workDays: event.target.value});
-      
-  //     return food === event.target.value
-  //   }
-        
-    
-  //   )
-  //   console.log(checkedFoods)
-  // }
 
 
-  // //include glutenfree, dairy free, vegan etc in the users data object
-  // //include an empty array in the user data state
-
-  // //let the user tick a box for the vegan, gluten free, and dairy free categories to set value to true or false
-  // //let the user select from the tick boxes other allergies
-  // in the handle submit function, push, filter, and add the new values
-  // set the user state to a NEW object with all of their allergies
-  
-
-  // ])
-  // const { formdata, handleChange, setFormdata } = useForm({
-    
-  // })
-
-
-  // // Make an array of food items
-  // // Map through the objects to create a JSX element for each food item
 
   const [url, setUrl] = React.useState(null) 
   const [input, setInput] = React.useState('')
@@ -237,7 +216,7 @@ function Main( ) {
                   return (
                     <div key={food}>
                       <label>{food}</label>
-                      <input type="checkbox" name={food} onChange={handleChangeCheckbox} checked={food.name ? 'checked' : ''}/>
+                      <input type="checkbox" name={food} onChange={handleChangeCheckbox} checked={allergies.includes(food) ? 'checked' : ''}/>
                     
                     </div>
                   )
@@ -253,23 +232,8 @@ function Main( ) {
         </div>
       </div>
 
-
-      <div>
-        <div className="column is-half">
-          <h3 className="title is-3">Enter Your Recipe</h3>
-          <form onSubmit={handleSubmit}>
-            <div className="section">
-              <div className="field">
-                <label className="label">Recipe URL</label>
-                <input onChange={handleChange} className="input" type="text" name="recipe" placeholder="Recipe URL" />
-              </div>
-              <div className="buttons">
-                <button className="button is-info">Submit</button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
+      <Link className="button is-info" to="recipes">Continue</Link>
+      
     </>
   )
 }
