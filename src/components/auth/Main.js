@@ -38,9 +38,38 @@ function Main( ) {
     allergies: [],
   })
 
-  const [userInput, setUserInput] = React.useState({})
-  
+  // ! Penny is going to try to rpoduce this data as an array of the allergies any as true or false values for each vegeetarian, vegen, etc.
 
+  const [vegetarian, setVegetarian] = React.useState(() => {
+    const currentState = window.localStorage.getItem('vegetarian')
+    if (currentState) return JSON.parse(currentState)
+    return false
+  })
+  const [vegan, setVegan] = React.useState(() => {
+    const currentState = window.localStorage.getItem('vegan')
+    if (currentState) return JSON.parse(currentState)
+    return false
+  })
+  const [glutenFree, setGlutenFree] = React.useState(() => {
+    const currentState = window.localStorage.getItem('glutenFree')
+    if (currentState) return JSON.parse(currentState)
+    return false
+  })
+  const [dairyFree, setDairyFree] = React.useState(() => {
+    const currentState = window.localStorage.getItem('dairyFree')
+    if (currentState) return JSON.parse(currentState)
+    return false
+  })
+
+  const [allergies, setAllergies] = React.useState([])
+
+  //what if we create a new state for each question like veg veg to set true false value
+  // we also create a new state that can hold the array with each food checked added in 
+  // then set the user state object to include these new updated sates when you hit submit on the url
+  // use these state varibles to check and compare with the info from the api returning
+
+  // ! Alberto to create a function to filter through the recipe data to find matching ingredients and true or false values
+  // ! This function on submit
 
   // const handleInput = (event) => {
   //   const checkedFoods = foods.filter(food => {
@@ -52,27 +81,56 @@ function Main( ) {
   //   console.log(checkedFoods)
   // }
 
+  React.useEffect(() => {
+    window.localStorage.setItem('vegetarian', JSON.stringify(vegetarian))
+  }, [vegetarian])
+  const handleVegetarian = (event) => {
+    setVegetarian(!vegetarian)
+  }
+
+  React.useEffect(() => {
+    window.localStorage.setItem('vegan', JSON.stringify(vegan))
+  }, [vegan])
+  const handleVegan = (event) => {
+    setVegan(!vegan)
+  }
+
+  React.useEffect(() => {
+    window.localStorage.setItem('glutenFree', JSON.stringify(glutenFree))
+  }, [glutenFree])
+  const handleGlutenFree = (event) => {
+    setGlutenFree(!glutenFree)
+  }
+
+  React.useEffect(() => {
+    window.localStorage.setItem('dairyFree', JSON.stringify(dairyFree))
+  }, [dairyFree])
+  const handleDairyFree = (event) => {
+    setDairyFree(!dairyFree)
+  }
+  console.log(vegetarian, vegan, glutenFree, dairyFree)
+
   const handleChangeCheckbox = (event) => {
     // The below line will spread in the user details and set allergies to an array of only the ONE box you selected.
-    setUserInput({ ...user, allergies: [event.target.value] })
+    setAllergies([...allergies, event.target.value])
   }
-  console.log(userInput)
+  console.log(allergies)
 
   // This function needs to be changed or removed
-  const handleConfirm = (event) => {
-    event.preventDefault()
-    const checkedFoods = foods.filter(food => {
-      // input:checkbox[name=type]:checked
+  // const handleConfirm = (event) => {
+  //   event.preventDefault()
+  //   const checkedFoods = foods.filter(food => {
+  //     // input:checkbox[name=type]:checked
 
-      //handleCheckboxChange = (event)=> this.setState({workDays: event.target.value});
+  //     //handleCheckboxChange = (event)=> this.setState({workDays: event.target.value});
       
-      return food === event.target.value
-    }
+  //     return food === event.target.value
+  //   }
         
     
-    )
-    console.log(checkedFoods)
-  }
+  //   )
+  //   console.log(checkedFoods)
+  // }
 
 
   // //include glutenfree, dairy free, vegan etc in the users data object
@@ -148,24 +206,24 @@ function Main( ) {
         </div>
         <div className="column is-half">
           <h3 className="title is-3">Tell us your allergies...</h3>
-          <form onSubmit={handleConfirm}>
+          <form>
             <div className="section">
               <h4 className="title is-4">I am:</h4>
               <div className="field">
                 <label>Vegetarian</label>
-                <input type="checkbox" value="vegeterian"/>
+                <input type="checkbox" onChange={handleVegetarian} checked={vegetarian ? 'checked' : ''}/>
               </div>
               <div className="field">
                 <label>Vegan</label>
-                <input type="checkbox" value="vegan" />
+                <input type="checkbox" onChange={handleVegan} checked={vegan ? 'checked' : ''} />
               </div>
               <div className="field">
                 <label>Gluten Free</label>
-                <input type="checkbox" value="glutenFree"/>
+                <input type="checkbox" onChange={handleGlutenFree} checked={glutenFree ? 'checked' : ''} />
               </div>
               <div className="field">
                 <label>Dairy Free</label>
-                <input type="checkbox" value="dairyFree" />
+                <input type="checkbox" onChange={handleDairyFree} checked={dairyFree ? 'checked' : ''} />
               </div>
               <h4 className="title is-4">I am allergic to:</h4>
               <div className="field">
@@ -178,9 +236,9 @@ function Main( ) {
                   )
                 })}
               </div>
-              <div className="buttons">
+              {/* <div className="buttons">
                 <button className="button is-info">Confirm</button>
-              </div>
+              </div> */}
             </div>
           </form>
         </div>
