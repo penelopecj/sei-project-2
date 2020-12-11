@@ -61,7 +61,11 @@ function Main( ) {
     return false
   })
 
-  const [allergies, setAllergies] = React.useState([])
+  const [allergies, setAllergies] = React.useState(() => {
+    const currentState = window.localStorage.getItem('allergies')
+    if (currentState) return JSON.parse(currentState)
+    return false
+  })
 
   //what if we create a new state for each question like veg veg to set true false value
   // we also create a new state that can hold the array with each food checked added in 
@@ -110,11 +114,13 @@ function Main( ) {
   }
   console.log(vegetarian, vegan, glutenFree, dairyFree)
 
+  React.useEffect(() => {
+    window.localStorage.setItem('allergies', JSON.stringify(allergies))
+  },[allergies])
   const handleChangeCheckbox = (event) => {
-    // The below line will spread in the user details and set allergies to an array of only the ONE box you selected.
-    setAllergies([...allergies, event.target.value])
+    setAllergies([...allergies, event.target.name])
   }
-  console.log(allergies)
+  console.log('allergies are', allergies )
 
   // This function needs to be changed or removed
   // const handleConfirm = (event) => {
@@ -231,10 +237,13 @@ function Main( ) {
                   return (
                     <div key={food}>
                       <label>{food}</label>
-                      <input type="checkbox" value={food} onChange={handleChangeCheckbox}/>
+                      <input type="checkbox" name={food} onChange={handleChangeCheckbox} checked={food.name ? 'checked' : ''}/>
+                    
                     </div>
                   )
                 })}
+                {/* value={foodChecked}
+                checked={foodChecked ? 'checked' : ''} */}
               </div>
               {/* <div className="buttons">
                 <button className="button is-info">Confirm</button>
