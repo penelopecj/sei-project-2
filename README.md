@@ -1,1 +1,1 @@
-🍪 Can I Eat This? - A Front-End
+# 🍪 Can I Eat This? - A Front-end React App
