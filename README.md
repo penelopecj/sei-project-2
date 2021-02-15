@@ -316,7 +316,7 @@ const handleSubmit = (event) => {
 
 ![List of allergies contained](./src/images/allergen-display.png)
 
-* Another finishing touch was when I figured out how to change the favicon on the browser tab.
+* Another win and finishing touch was when I figured out how to change the favicon on the browser tab.
 
 ![favicon](./src/images/cookie-monster-emoji.png)
 
