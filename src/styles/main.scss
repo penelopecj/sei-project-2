@@ -1,1 +1,37 @@
 @import "~bulma/bulma.sass";
+
+nav {
+  padding: 10px;
+  p {
+    color: white;
+  }
+
+  a {
+    font-weight: bold;
+    border-radius: 10px;
+  }
+}
+
+label {
+  margin-right: 5px;
+}
+
+.btn-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.continue {
+  font-weight: bold;
+  width: 50%;
+}
+
+
+
+
+
+
+
+
+

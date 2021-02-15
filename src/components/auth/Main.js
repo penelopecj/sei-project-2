@@ -228,12 +228,13 @@ function Main( ) {
                 <button className="button is-info">Confirm</button>
               </div> */}
             </div>
+            <div className="btn-wrapper">
+              <Link className="button is-info continue" to="recipes">Continue</Link>
+            </div>
           </form>
         </div>
       </div>
-
-      <Link className="button is-info" to="recipes">Continue</Link>
-      
+  
     </>
   )
 }

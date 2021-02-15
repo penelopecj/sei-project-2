@@ -71,7 +71,7 @@ function RecipeForm(){
               <input onChange={handleChange} className="input" type="text" name="recipe" placeholder="Recipe URL" />
             </div>
             <div className="buttons">
-              <button className="button is-info">Submit</button>
+              <button className="button is-info continue">Submit</button>
             </div>
             <h4 className="title is-4">Contains...</h4>
             {badIngredients.map(thing => {
