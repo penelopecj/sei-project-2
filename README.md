@@ -61,7 +61,7 @@ I deployed this website on Netlify and it is available [_here_](https://recipe-a
 * We began by chatting through a very basic user story and wireframe of our apps design and components, given the limited time we had.
 * We wrote throwaway code to explain our thought process to each other and to solve short term problems.
 * We first took the time to read the docs for Bulma and the Spoonacular API we were using.
-* We decided to pair code most of the app on VS Code Live Share so we could pool or knowledge and get more built quickly in the short time we had.
+* We decided to pair code most of the app on VS Code Live Share so we could pool our knowledge and get more built quickly in the short time we had.
 * We began by writing pseudocode before writing actual code to help us think through the logic first.
 * We weren't too concerned with writing DRY code at the time, as we wanted to achieve a lot of functionality in 48 hours. We decided we would come back to re-factor repetitive code later on.
 * We discussed and agreed on consistent code styles, indentation, and naming conventions.
@@ -111,9 +111,127 @@ export function getRecipeInfo(pageUrl){
 
 ![allergy form](./src/images/allergy-form.png)
 
-* This information about the user gets stored in local storage, and the user can click "**Continue**" to navigate to the recipe-checker component.
+* This information about the user gets stored in local storage with the following React states and change functions.
+
+**User dietary resrictions stored as a default object in state**
+```
+const [user, setUser] = React.useState({
+    vegetarian: false,
+    vegan: false,
+    glutenFree: false,
+    dairyFree: false,
+    allergies: [],
+  })
+```
+**Check the truthy or falsiness of each value currently in local storage and set the values accordingly in state**
+```
+  const [vegetarian, setVegetarian] = React.useState(() => {
+    const currentState = window.localStorage.getItem('vegetarian')
+    if (currentState) return JSON.parse(currentState)
+    return false
+  })
+  const [vegan, setVegan] = React.useState(() => {
+    const currentState = window.localStorage.getItem('vegan')
+    if (currentState) return JSON.parse(currentState)
+    return false
+  })
+  const [glutenFree, setGlutenFree] = React.useState(() => {
+    const currentState = window.localStorage.getItem('glutenFree')
+    if (currentState) return JSON.parse(currentState)
+    return false
+  })
+  const [dairyFree, setDairyFree] = React.useState(() => {
+    const currentState = window.localStorage.getItem('dairyFree')
+    if (currentState) return JSON.parse(currentState)
+    return false
+  })
+  ```
+  **Check if there are already items stored in the allergies array in local storage and set this value to the existing array**
+  ```
+  const [allergies, setAllergies] = React.useState(() => {
+    const currentState = window.localStorage.getItem('allergies')
+    if (currentState) return JSON.parse(currentState)
+    return []
+  })
+  ```
+  **React useEffect() to update when any of the values of the checkbox items are changed**
+  ```
+  React.useEffect(() => {
+    window.localStorage.setItem('vegetarian', JSON.stringify(vegetarian))
+  }, [vegetarian])
+  const handleVegetarian = (event) => {
+    setVegetarian(!vegetarian)
+  }
+
+  React.useEffect(() => {
+    window.localStorage.setItem('vegan', JSON.stringify(vegan))
+  }, [vegan])
+  const handleVegan = (event) => {
+    setVegan(!vegan)
+  }
+
+  React.useEffect(() => {
+    window.localStorage.setItem('glutenFree', JSON.stringify(glutenFree))
+  }, [glutenFree])
+  const handleGlutenFree = (event) => {
+    setGlutenFree(!glutenFree)
+  }
+
+  React.useEffect(() => {
+    window.localStorage.setItem('dairyFree', JSON.stringify(dairyFree))
+  }, [dairyFree])
+  const handleDairyFree = (event) => {
+    setDairyFree(!dairyFree)
+  }
+
+  React.useEffect(() => {
+    window.localStorage.setItem('allergies', JSON.stringify(allergies))
+  },[allergies])
+  const handleChangeCheckbox = (event) => {
+    if (allergies.includes(event.target.name)) {
+      setAllergies([...allergies])
+    } else {
+      setAllergies([...allergies, event.target.name])
+    }
+  }
+```
 
 
+**The JSX logic to keep the checkboxes up to date with the values in local storage and state**
+```
+<div className="field">
+  <label>Vegetarian</label>
+  <input type="checkbox" onChange={handleVegetarian} checked={vegetarian ? 'checked' : ''}/>
+</div>
+
+<div className="field">
+  <label>Vegan</label>
+  <input type="checkbox" onChange={handleVegan} checked={vegan ? 'checked' : ''} />
+</div>
+
+<div className="field">
+  <label>Gluten Free</label>
+  <input type="checkbox" onChange={handleGlutenFree} checked={glutenFree ? 'checked' : ''} />
+</div>
+
+<div className="field">
+  <label>Dairy Free</label>
+  <input type="checkbox" onChange={handleDairyFree} checked={dairyFree ? 'checked' : ''} />
+</div>
+
+<div className="field">
+  {foods.sort().map(food => {
+    return (
+      <div key={food}>
+        <label>{food}</label>
+        <input type="checkbox" name={food} onChange={handleChangeCheckbox} checked={allergies.includes(food) ? 'checked' : ''}/>
+      </div>
+    )
+  })}
+</div>
+```
+
+* With all of this data now stored in local storage, the user can click "**Continue**" to navigate to the recipe-checker component.
 
 ### DAY 2
 * The second day we had hoped to do more styling, but ended up spending most of the time de-bugging our existing code and working on the core functionality of checking the recipe for allergens.
@@ -121,8 +239,6 @@ export function getRecipeInfo(pageUrl){
 * We added a text input for the user to paste in a URL from any online recipe. 
 
 ![recipe URL form](./src/images/recipe-with-url.png)
-
-* The onChange function on this input element is where the complicated logic for the app is stored.
 
 * The handleChange function sets `input` to the state of the characters typed in the input.
 ```
@@ -213,7 +329,7 @@ const handleSubmit = (event) => {
 
 ## Key Learnings
 * Learnt to use React for the first time to build an app from scratch and to set up a single-page application with multiple components.
-* It was my first time pair coding on any project and I learnt a lot about collaborating, communcating, planning, and using Live Share to work on the same code in real time. This worked well enough for this short project, but I would not use this for a bigger project when it would be more useful to divide and conquer.
+* It was my first time pair coding on any project and I learnt a lot about collaborating, communcating, planning, and using Live Share to work on the same code in real time. This worked well enough for this short project, but I probably would not use this for a bigger project when it would be more useful to divide and conquer.
 * First time doing a hackathon-style project and working under time pressure. I know for the next time to be more realistic about what can be accomplished in such a short time!
 
 ## Unsolved Problems
