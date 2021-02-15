@@ -1,5 +1,5 @@
-# 🍪 Can I Eat This? - A Front-end React App
-A React app built during a 48hr hackathon. Uses the [Spoonacular API](https://spoonacular.com/food-api). My first pair project for General Assembly's Software Engineering Immersive.
+# 🍪 Can I Eat This? - A Frontend React App
+A React app built during a 48-hour hackathon, using the [Spoonacular API](https://spoonacular.com/food-api). My first pair-coding project for General Assembly's Software Engineering Immersive.
 ### Developed by:
 * Alberto Cerrone - [GitHub](https://github.com/albertocerrone)
 
@@ -13,7 +13,7 @@ I deployed this website on Netlify and it is available [_here_](https://recipe-a
 ## Concept
 **Can I Eat This** is a site where users can select their allergies and dietary restrictions from a list, then input any recipe URL from the web. The site will produce a list of the user's allergens that are contained in the recipe.
 
-## Project #2 Brief: Reacathon
+## Project Brief: Reacathon
 * 48 hours to build a React application that consumes a public API.
 * Public API could have been anything, but needed to make sense for our project.
 * Have several components, including at least one classical and one functional.
@@ -29,7 +29,7 @@ I deployed this website on Netlify and it is available [_here_](https://recipe-a
   * JavaScript (ES6)
   * React.js
   * HTML5
-  * CSS3
+  * SASS
   * Axios
   * react-router-dom
   * Bulma
@@ -67,7 +67,7 @@ I deployed this website on Netlify and it is available [_here_](https://recipe-a
 * We discussed and agreed on consistent code styles, indentation, and naming conventions.
 * We made sure to commit early and often in case we broke something and needed to roll back to a previous version.
 * We kept our user stories small and well-defined, trying to always come back to what our target user would actually want and need.
-* We began by scaffolding a basic React app from a template.
+* We saved time by scaffolding a basic React app from a template.
 * We then built our file structure as below.
 
 ![VS Code file structure](./src/images/file-structure.png)
@@ -111,36 +111,94 @@ export function getRecipeInfo(pageUrl){
 
 ![allergy form](./src/images/allergy-form.png)
 
-* This information about the user gets stored in local storage, and the user can click ::Continue:: to navigate to the recipe checker component.
+* This information about the user gets stored in local storage, and the user can click "**Continue**" to navigate to the recipe-checker component.
 
-* We made a URL text input that can take any url from an onlie recipe.
+
+
+### DAY 2
+* The second day we had hoped to do more styling, but ended up spending most of the time de-bugging our existing code and working on the core functionality of checking the recipe for allergens.
+
+* We added a text input for the user to paste in a URL from any online recipe. 
 
 ![recipe URL form](./src/images/recipe-with-url.png)
-### DAY 2
-* Debugging
-## Wins
-* Used a custom React hook to handle the form state manipulation and checkboxes. Used an object spread to create a new object every time, triggering the React state to change and the browser to re-render.
+
+* The onChange function on this input element is where the complicated logic for the app is stored.
+
+* The handleChange function sets `input` to the state of the characters typed in the input.
+```
+  const handleChange = (event) => {
+    setInput(event.target.value)
+  }
+```
+
+* The `checkIngredients()` function we wrote to compare the allergies and dietary restrictions in localStorage to the ingredient names and dietary data the API pulled from the recipe website.
+```
+  const checkIngredients = (myRecipe) =>{
+    const localStorageAllergies = window.localStorage.getItem('allergies')
+    const localStorageVegetarian = window.localStorage.getItem('vegetarian')
+    const localStorageVegan = window.localStorage.getItem('vegan')
+    const localStorageGlutenFree = window.localStorage.getItem('glutenFree')
+    const localStorageDairyFree = window.localStorage.getItem('dairyFree')
+
+    const  ingredients  = myRecipe.extendedIngredients.map(ingredient =>{
+      return ingredient.name
+    }).filter(element => localStorageAllergies.includes(element))
+    
+    if (localStorageVegetarian === true) {
+      ingredients.push('vegetarian')
+    }
+    if (localStorageVegan === true) {
+      ingredients.push('vegan')
+    }
+    if (localStorageGlutenFree === true) {
+      ingredients.push('gluten free')
+    }
+    if (localStorageDairyFree === true) {
+      ingredients.push('dairy free')
+    }
+    setBadIngredients(ingredients)
+  }
+```
+
+* We used React's `useEffect()` to re-render the page whenever a URL was entered or changed in the text input.
+```
+  React.useEffect(() => {
+    if (!url) return
+    const getData = async () => {
+      try {
+        const { data } = await getRecipeInfo(url)
+        checkIngredients(data)
+        setData(data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    getData()
+  }, [url])
+```
+
+* The function on the "**Submit**" button then simply sets the a state called `url` to be the url that the user input, which triggers the data to be checked again and the page re-rendered.
 
 ```
-function useForm(initialState) {
-  const [formdata, setFormdata] = React.useState(initialState)
-
-  const handleChange = event => {
-    setFormdata({ ...formdata, [event.target.name]: event.target.value })
-  }
-
-  return {
-    formdata,
-    handleChange,
-  }
+const handleSubmit = (event) => {
+  event.preventDefault()
+  setUrl(input)
 }
-export default useForm
 ```
+
+* This element in the JSX will map through whatever is in the bad ingredients allergy array and display a list on the page.
+
+```
+<h4 className="title is-4">Contains...</h4>
+{badIngredients.map(thing => {
+  return <p key={thing}>{thing}</p>
+})}
+```
+## Wins
 
 * The biggest win for me, right before the end of the hackathon, was checking the allergies from the array in local storage against the ingredients in the recipe and displaying the list of matches on the page.
 
 ![List of allergies contained](./src/images/allergen-display.png)
-
 
 * Another finishing touch was when I figured out how to change the favicon on the browser tab.
 
@@ -154,15 +212,14 @@ export default useForm
 ![Chrome local storage](./src/images/local-storage.png)
 
 ## Key Learnings
-* First React app
-* First time pair coding
-* First time using Live Share - difficult
-* First sinlge-page application
-* First hackathon
-
+* Learnt to use React for the first time to build an app from scratch and to set up a single-page application with multiple components.
+* It was my first time pair coding on any project and I learnt a lot about collaborating, communcating, planning, and using Live Share to work on the same code in real time. This worked well enough for this short project, but I would not use this for a bigger project when it would be more useful to divide and conquer.
+* First time doing a hackathon-style project and working under time pressure. I know for the next time to be more realistic about what can be accomplished in such a short time!
 
 ## Unsolved Problems
-
+* Without building a backend or database, there was no way we could create user accounts that stored info about individual users.
+* The information the API collects from the recipes regarding _gluten free_, _dairy free_, and these types of preferences is not totally reliable.
+* Users cannot clear their checkbox preferences from the UI side. The only way to clear this data is to clear the local storage on the browser.
 
 ## Features Wish List
 * We didn't have time in the short hackathon, but the dream is to convert this into a Chrome browser extension that could check the ingredients on any recipe when you arrive on the page.
@@ -170,3 +227,9 @@ export default useForm
 ✨ ***PRs welcome!*** ✨
 
 ## Credits
+
+Cookie Monster image courtesy of [Sesame Workshop](https://www.sesameworkshop.org/).
+
+All colours and some styling from [Bulma](https://bulma.io/) CSS Framework.
+
+All fonts provided by [Google Fonts](https://fonts.google.com/).
