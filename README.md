@@ -1,9 +1,9 @@
 # 🍪 Can I Eat This? - A Frontend React App
 A React app built during a 48-hour hackathon, using the [Spoonacular API](https://spoonacular.com/food-api). My first pair-coding project for General Assembly's Software Engineering Immersive.
 ### Developed by:
-* Alberto Cerrone - [GitHub](https://github.com/albertocerrone)
-
 * Penny Jungreis - [GitHub](https://github.com/penelopecj)
+
+* Alberto Cerrone - [GitHub](https://github.com/albertocerrone)
 
 ![homepage](./src/images/homepage.png)
 
